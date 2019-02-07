@@ -63,8 +63,12 @@
     <Compile Include="Controls\DropDownButton.xaml.cs">
       <DependentUpon>DropDownButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SoundChart.xaml.cs">
+      <DependentUpon>SoundChart.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\DelayedAction.cs" />
     <Compile Include="Utilities\IsolatedStorage.cs" />
+    <Compile Include="Utilities\Numeric.cs" />
     <Compile Include="Utilities\Settings.cs" />
     <Compile Include="Utilities\UiDispatcher.cs" />
     <Compile Include="Utilities\XamlExtensions.cs" />
@@ -73,6 +77,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\DropDownButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SoundChart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -58,10 +58,9 @@
 
         </Grid>
 
-        <Grid Grid.Row="1" Grid.ColumnSpan="2" x:Name="DrawingGrid"  Background="#252525">
-            <Canvas x:Name="DrawingCanvas"/>
+        <Grid Grid.Row="1" Grid.ColumnSpan="2" >
+            <local:SoundChart x:Name="SoundChart" Background="#252525"/>
         </Grid>
-
 
         <local:AppSettings x:Name="AppSettingsPanel" Grid.Row="1" Grid.Column="1" Width="300" HorizontalAlignment="Right" Visibility="Collapsed">
         </local:AppSettings>

@@ -113,7 +113,7 @@ namespace WpfAudioTool
         private void OnClear(object sender, RoutedEventArgs e)
         {
             StopRecording();
-            this.DrawingCanvas.Children.Clear();
+            this.SoundChart.Clear();
         }
 
         private void OnSettings(object sender, RoutedEventArgs e)
@@ -339,92 +339,11 @@ namespace WpfAudioTool
                     ShowStatus(ex.Message);
                 }
                 SetButtonState();
-                ShowSamples();
+                SoundChart.ShowSamples(this.samples);
                 if (!this.recording.Loading)
                 {
                     ShowStatus("saved audio to: " + this.recording.FileName);
                 }
-            }
-        }
-
-        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
-        {
-            base.OnRenderSizeChanged(sizeInfo);
-            ShowSamples();
-        }
-
-        private void ShowSamples()
-        {
-            DrawingCanvas.Children.Clear();
-            if (this.samples.Count > 0)
-            {
-                List<float> maxPath = Summarize(this.samples, (int)this.ActualWidth, (a, b) => { return (float)Math.Max(a, b); });
-                List<float> minPath = Summarize(this.samples, (int)this.ActualWidth, (a, b) => { return (float)Math.Min(a, b); });
-                AddPath(maxPath, minPath);
-                DrawingCanvas.InvalidateArrange();
-            }
-        }
-
-        private void AddPath(List<float> upper, List<float> lower)
-        {
-            double scale = this.DrawingGrid.ActualHeight / 4;
-            Point start = new Point(0, (upper[0] * scale) + scale);
-            PathFigure fig = new PathFigure() { StartPoint = start };
-            fig.IsClosed = true;
-            fig.IsFilled = true;
-            foreach (PathSegment s in (from i in Range(1, upper.Count) select new LineSegment(new Point(i, (upper[i] * scale) + scale), true)))
-            {
-                fig.Segments.Add(s);
-            }
-            foreach (PathSegment s in (from i in ReverseRange(1, upper.Count) select new LineSegment(new Point(i, (lower[i] * scale) + scale), true)))
-            {
-                fig.Segments.Add(s);
-            }
-            PathGeometry g = new PathGeometry();
-            g.Figures.Add(fig);
-
-            Path path = new Path()
-            {
-                Stroke = Brushes.AntiqueWhite,
-                StrokeThickness = 1,
-                Fill = Brushes.AntiqueWhite,
-                Data = g
-            };
-            DrawingCanvas.Children.Add(path);
-        }
-
-        private List<float> Summarize(List<float> data, int width, Func<float, float, float> summaryFunc)
-        {
-            List<float> summary = new List<float>(width);
-            int len = data.Count;
-            double step = (double)len / (double)width;
-            double pos = 0;
-            while (pos + step < len)
-            {
-                int i = (int)pos;
-                float value = data[i];
-                for (int j = 1; j < step; j++)
-                {
-                    value = summaryFunc(value, data[i + j]);
-                }
-                summary.Add(value);
-                pos += step;
-            }
-            return summary;
-        }
-
-        IEnumerable<int> Range(int min, int max)
-        {
-            for (int i = min; i < max; i++)
-            {
-                yield return i;
-            }
-        }
-        IEnumerable<int> ReverseRange(int min, int max)
-        {
-            for (int i = max - 1; i >= min; i--)
-            {
-                yield return i;
             }
         }
 
