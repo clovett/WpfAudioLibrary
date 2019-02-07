@@ -403,17 +403,13 @@ namespace AudioLibrary
                     {
                         HandleError("Error reading audio: " + hr.ToString());
                     }
-                    else if ((dwStreamFlags & MF_SOURCE_READER_FLAG.CurrentMediaTypeChanged) != 0)
-                    {
-                        HandleError("unexpected CurrentMediaTypeChanged received");
-                    }
                     else 
                     {
                         PublishSample(pSample, (dwStreamFlags & MF_SOURCE_READER_FLAG.EndOfStream) != 0);
                     }
                 }
             }
-            return this.recording ? HResult.S_OK : HResult.S_FALSE;
+            return HResult.S_OK;
         }
 
         private void PublishSample(IMFSample sample, bool closed)

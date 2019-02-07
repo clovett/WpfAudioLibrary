@@ -353,6 +353,8 @@ namespace MediaFoundation.ReadWrite
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant varPosition
         );
 
+        // [Chris] I had to modify this function so it would work in the async read case.
+        // https://sourceforge.net/p/mfnet/discussion/711229/thread/9b1606a521/
         [PreserveSig]
         HResult ReadSample(
             int dwStreamIndex,
